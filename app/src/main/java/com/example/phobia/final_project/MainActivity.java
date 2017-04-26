@@ -3,6 +3,7 @@ package com.example.phobia.final_project;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,12 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
     private Button okButton, cancelButton;
     private ImageView imagelogo, logoid, logopass;
     private TextView register;
     private EditText passidEditText, passwordEditText;
-    private String passidString, passwordString;
+    private String passidString,passwordString,jsonrespone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +48,17 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
 
-                    
+                    myconfig myconfig = new myconfig();
+                    get_data get_data = new get_data(MainActivity.this);
+                    try {
+                        get_data.execute(myconfig.getLogin()
+                        );
+                        jsonrespone = get_data.get().toString();
+                        JSONObject jsonObject = new JSONObject(jsonrespone);
 
+                    } catch (Exception e) {
+                        Log.d("login", "login==>" + jsonrespone);
+                    }
                 }
             }
         });
