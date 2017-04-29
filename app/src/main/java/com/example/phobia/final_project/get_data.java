@@ -19,7 +19,6 @@ public class get_data extends AsyncTask<String,Void,String>{
         this.context = context;
     }
 
-
     @Override
     protected String doInBackground(String... strings) {
         try {
@@ -33,7 +32,6 @@ public class get_data extends AsyncTask<String,Void,String>{
             return resJSON;
         }
         catch (Exception e) {
-
             Log.d("getdata", "getdata==>" + e.toString());
             return null;
         }

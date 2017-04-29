@@ -14,12 +14,12 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-    private Button okButton, cancelButton;
-    private ImageView imagelogo, logoid, logopass;
-    private TextView register;
     private EditText passidEditText, passwordEditText;
-    private String passidString,passwordString,jsonrespone;
-
+    private String jsonrespone,passidString,passwordString;
+    private String datauser, message;
+    private Button okButton, cancleButton;
+    private TextView registerTextView;
+    private Boolean status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,14 +30,6 @@ public class MainActivity extends AppCompatActivity {
     }//main method
 
     private void buttoncontoller() {
-
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, activity_register.class);
-                startActivity(intent);
-            }
-        });
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,39 +37,61 @@ public class MainActivity extends AppCompatActivity {
                 passwordString = passwordEditText.getText().toString().trim();
                 if (passidString.equals("") || passwordString.equals("")) {
                     Toast.makeText(MainActivity.this, "กรุณากรอกข้อมูลให้ครบ", Toast.LENGTH_LONG).show();
-                }
-                else {
+                } else {
 
                     myconfig myconfig = new myconfig();
                     get_data get_data = new get_data(MainActivity.this);
                     try {
+
                         get_data.execute(myconfig.getLogin()
+                                + "user" + passidString + "&" + "password" + passwordString
                         );
                         jsonrespone = get_data.get().toString();
                         JSONObject jsonObject = new JSONObject(jsonrespone);
+                        datauser = jsonObject.getString("data_user");
+                        message = jsonObject.getString("message");
+                        status = jsonObject.getBoolean("status");
+                        if (status == true) {
+
+                            Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(MainActivity.this,register.class);
+                            intent.putExtra("data_user",datauser);
+                            startActivity(intent);
+                        } else {
+
+                            Toast.makeText(MainActivity.this, message,Toast.LENGTH_LONG).show();
+                        }
+
+                        Log.d("login", "login==>" + jsonrespone);
 
                     } catch (Exception e) {
-                        Log.d("login", "login==>" + jsonrespone);
+
+                        Log.d("login", "login==>" +toString());
                     }
+
                 }
+                registerTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MainActivity.this,register.class);
+                        startActivity(intent);
+                    }
+                });
             }
         });
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        cancleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                passidEditText.getText().clear();
+                passwordEditText.getText().clear();
             }
         });
     }
-
     private void bindwidget() {
-        okButton = (Button) findViewById(R.id.ok);
-        cancelButton = (Button) findViewById(R.id.cancel);
-        imagelogo = (ImageView) findViewById(R.id.imagelogo);
-        logoid = (ImageView) findViewById(R.id.logoid);
-        logopass = (ImageView) findViewById(R.id.logopass);
-        register = (TextView) findViewById(R.id.register);
         passidEditText = (EditText) findViewById(R.id.passid);
         passwordEditText = (EditText) findViewById(R.id.password);
+        registerTextView = (TextView) findViewById(R.id.register);
+        okButton = (Button) findViewById(R.id.okButton);
+        cancleButton = (Button) findViewById(R.id.cancelButton);
     }
 }//main class
