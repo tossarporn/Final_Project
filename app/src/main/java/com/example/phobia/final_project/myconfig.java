@@ -5,9 +5,9 @@ package com.example.phobia.final_project;
  */
 
 public class myconfig {
-    private String login = "http://127.0.0.1:8081/Final_Project/catarogy/technician/login.php?";
-    private String register_customer = "http://127.0.0.1:8081/Final_Project/catarogy/costomer/register_C.php?";
-    private String register_technician = "http://127.0.0.1:8081/Final_Project/catarogy/technician/register_T.php?";
+    private String login = "http://10.5.20.82:8081/Final_Project/catarogy/technician/login.php";
+    private String register_customer = "http://10.5.20.82:8081/Final_Project/catarogy/costomer/register_C.php";
+    private String register_technician = "http://10.5.20.82:8081/Final_Project/catarogy/technician/register_T.php";
 
     public String getRegister_technician() {
         return register_technician;

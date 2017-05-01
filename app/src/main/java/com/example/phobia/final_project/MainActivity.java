@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private String datauser, message;
     private Button okButton, cancleButton;
     private TextView registerTextView;
-    private Boolean status;
+    private int status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,22 +44,31 @@ public class MainActivity extends AppCompatActivity {
                     try {
 
                         get_data.execute(myconfig.getLogin()
-                                + "user" + passidString + "&" + "password" + passwordString
+                                + "?user=" + passidString + "&"
+                                + "password=" + passwordString + "&"
+                                +"status="+status
                         );
                         jsonrespone = get_data.get().toString();
                         JSONObject jsonObject = new JSONObject(jsonrespone);
                         datauser = jsonObject.getString("data_user");
                         message = jsonObject.getString("message");
-                        status = jsonObject.getBoolean("status");
-                        if (status == true) {
+                        status = jsonObject.getInt("status");
+
+                        if (status == 1) {
 
                             Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(MainActivity.this,register.class);
                             intent.putExtra("data_user",datauser);
                             startActivity(intent);
+                        }
+                        if (status == 2) {
+                            Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(MainActivity.this, register.class);
+                            intent.putExtra("data_user", datauser);
+                            startActivity(intent);
                         } else {
 
-                            Toast.makeText(MainActivity.this, message,Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "ไม่มีผู้ใช้นี่อยู่ในระบบ", Toast.LENGTH_LONG).show();
                         }
 
                         Log.d("login", "login==>" + jsonrespone);

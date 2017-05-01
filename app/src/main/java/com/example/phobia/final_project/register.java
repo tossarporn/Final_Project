@@ -19,8 +19,8 @@ public class register extends AppCompatActivity {
     private String idString, passString;
     private String jsonrespone;
     private String message,datauser;
-    private int customer = 1;
-    private int technician= 2;
+    private int customer =  1  ;
+    private int technician = 2 ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +54,7 @@ public class register extends AppCompatActivity {
 
                     try {
                         get_data.execute(myconfig.getRegister_customer()
-                                + "user" + idString + "&"
+                                + "?user" + idString + "&"
                                 + "password" + passString +"&"
                                 +"status" + customer
                         );
@@ -73,7 +73,7 @@ public class register extends AppCompatActivity {
                         }
                         Log.d("register_c", "register_C==>" + jsonrespone);
                     } catch (Exception e) {
-                        Log.d("register_c", "register_c==>" + e.toString());
+                        Log.d("register_c", "register_c==>" + jsonrespone);
                     }
                 }
             }
@@ -92,10 +92,15 @@ public class register extends AppCompatActivity {
                     get_data get_data = new get_data(register.this);
                     try {
                         get_data.execute(myconfig.getRegister_technician()
-                                + "user" + idString + "&"
-                                + "password" + passString + "&"
-                                + "status" + technician
+                                + "?user=" + idString + "&"
+                                + "password=" + passString + "&"
+                                + "status=" + technician
                         );
+//                        String get =  "?user=" + idString + "&"
+//                                + "password=" + passString + "&"
+//                                + "status=" + technician;
+
+                        //Log.d("get",get);
                         jsonrespone = get_data.get().toString();
                         JSONObject jsonObject = new JSONObject(jsonrespone);
                         technician = jsonObject.getInt("status");
@@ -111,7 +116,7 @@ public class register extends AppCompatActivity {
                         Log.d("register_technician", "register_technician==>" + jsonrespone);
 
                     } catch (Exception e) {
-                        Log.d("register_technician", "register_technician==>" + e.toString());
+                        Log.d("register_technician", "register_technician==>" + jsonrespone  );
                     }
                 }
             }
